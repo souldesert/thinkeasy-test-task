@@ -2,7 +2,8 @@ import type {Metadata} from 'next'
 import {Geist, Geist_Mono} from 'next/font/google'
 
 import Container from '@/app/components/container'
-import ThemeProvider from '@/app/components/providers/theme-provider'
+import StoreProvider from '@/app/components/providers/store'
+import ThemeProvider from '@/app/components/providers/theme'
 
 import './globals.css'
 
@@ -29,9 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider>
-          <Container>{children}</Container>
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider>
+            <Container>{children}</Container>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   )
