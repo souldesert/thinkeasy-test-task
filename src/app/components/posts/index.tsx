@@ -5,10 +5,18 @@ import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from '@/app/store'
 import {postsActions} from '@/app/store/posts'
 
+import Post from './post'
+import styles from './styles.module.css'
+
 const Posts: FC = () => {
   const dispatch = useDispatch()
 
-  const posts = useSelector(({posts}: RootState) => posts.posts)
+  const postsSorted = useSelector(({posts}: RootState) =>
+    posts.posts.toSorted(
+      (postA, postB) =>
+        Date.parse(postB.updatedAt) - Date.parse(postA.updatedAt),
+    ),
+  )
 
   useEffect(() => {
     dispatch(postsActions.loadPosts())
@@ -16,7 +24,11 @@ const Posts: FC = () => {
 
   return (
     <Box component="main">
-      <pre>{JSON.stringify(posts, null, 4)}</pre>
+      <Box className={styles.container}>
+        {postsSorted.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </Box>
     </Box>
   )
 }
