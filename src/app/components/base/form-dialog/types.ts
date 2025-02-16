@@ -5,6 +5,7 @@ export interface FormDialogProps {
   confirmLabel: string
   open: boolean
   formContext: UseFormReturn<any>
+  disabled: boolean
   onSubmit: (data: any) => any
   onClose: VoidFunction
 }

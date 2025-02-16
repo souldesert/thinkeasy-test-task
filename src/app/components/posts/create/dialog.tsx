@@ -1,4 +1,4 @@
-import {FC} from 'react'
+import {FC, useState} from 'react'
 import {
   TextareaAutosizeElement,
   TextFieldElement,
@@ -17,10 +17,15 @@ const CreateDialog: FC<CreateDialogProps> = ({open, toggleOpen}) => {
 
   const formContext = useForm<CreatePostInput>()
 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const onSubmit = async (data: CreatePostInput) => {
-    console.log(data)
+    setIsLoading(true)
+
     await getPosts().postsControllerCreate(data)
     dispatch(postsActions.loadPosts())
+
+    setIsLoading(false)
     toggleOpen()
   }
 
@@ -30,15 +35,22 @@ const CreateDialog: FC<CreateDialogProps> = ({open, toggleOpen}) => {
       confirmLabel="Save"
       open={open}
       formContext={formContext}
+      disabled={isLoading}
       onSubmit={onSubmit}
       onClose={toggleOpen}
     >
-      <TextFieldElement name="title" label="Title" required />
+      <TextFieldElement
+        name="title"
+        label="Title"
+        disabled={isLoading}
+        required
+      />
       <TextareaAutosizeElement
         name="content"
         label="Content"
         resizeStyle="vertical"
         rows={3}
+        disabled={isLoading}
         required
       />
     </FormDialog>

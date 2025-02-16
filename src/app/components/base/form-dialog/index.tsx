@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
+  useTheme,
 } from '@mui/material'
 import {FC, PropsWithChildren} from 'react'
 import {FormContainer} from 'react-hook-form-mui'
@@ -18,18 +19,30 @@ const FormDialog: FC<Props> = ({
   confirmLabel,
   open,
   formContext,
+  disabled,
   onSubmit,
   onClose,
   children,
 }) => {
+  const theme = useTheme()
+
+  const resetForm = () => {
+    setTimeout(formContext.reset, theme.transitions.duration.standard)
+  }
+
   const handleClose = () => {
-    formContext.reset()
     onClose()
+    resetForm()
+  }
+
+  const handleSubmit = (data: any) => {
+    onSubmit(data)
+    resetForm()
   }
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <FormContainer formContext={formContext} onSuccess={onSubmit}>
+      <FormContainer formContext={formContext} onSuccess={handleSubmit}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <Stack direction="column" spacing={2}>
@@ -37,11 +50,13 @@ const FormDialog: FC<Props> = ({
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose} disabled={disabled}>
+            Cancel
+          </Button>
           <Button
             type="submit"
             variant="contained"
-            disabled={!formContext.formState.isValid}
+            disabled={!formContext.formState.isValid || disabled}
           >
             {confirmLabel}
           </Button>

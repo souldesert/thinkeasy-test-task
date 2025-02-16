@@ -1,5 +1,5 @@
 import {AxiosResponse} from 'axios'
-import {FC} from 'react'
+import {FC, useState} from 'react'
 import {TextFieldElement, useForm} from 'react-hook-form-mui'
 
 import {Auth, getAuth, LoginInput} from '@/app/api'
@@ -13,8 +13,10 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
 
   const formContext = useForm<LoginInput>()
 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const onSubmit = async (data: LoginInput) => {
-    console.log(data)
+    setIsLoading(true)
 
     // @ts-expect-error TODO поправить
     const {
@@ -23,6 +25,7 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
 
     authenticate(accessToken, refreshToken)
 
+    setIsLoading(false)
     toggleOpen()
   }
 
@@ -32,11 +35,23 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
       confirmLabel="Login"
       open={open}
       formContext={formContext}
+      disabled={isLoading}
       onSubmit={onSubmit}
       onClose={toggleOpen}
     >
-      <TextFieldElement name="email" label="Email" required />
-      <TextFieldElement name="password" label="Password" required />
+      <TextFieldElement
+        name="email"
+        label="Email"
+        disabled={isLoading}
+        required
+      />
+      <TextFieldElement
+        name="password"
+        type="password"
+        label="Password"
+        disabled={isLoading}
+        required
+      />
     </FormDialog>
   )
 }
