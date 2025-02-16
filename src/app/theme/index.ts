@@ -1,3 +1,9 @@
-import {createTheme} from '@mui/material'
+import {ThemeOptions} from '@mui/material'
 
-export const appTheme = createTheme()
+import {fabTheme as fab} from './components/fab'
+
+export const appThemeOptions: ThemeOptions = {
+  components: {
+    ...fab.components,
+  },
+}

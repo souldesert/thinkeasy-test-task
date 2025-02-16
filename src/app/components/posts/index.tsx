@@ -1,35 +1,35 @@
-import {Box} from '@mui/material'
+import {Stack} from '@mui/material'
 import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
-import {RootState} from '@/app/store'
+import {useAuth} from '@/app/hooks/auth'
 import {postsActions} from '@/app/store/posts'
+import {sortedPostsSelector} from '@/app/store/posts/selectors'
 
+import Create from './create'
 import Post from './post'
-import styles from './styles.module.css'
 
 const Posts: FC = () => {
+  const {isAuthenticated} = useAuth()
+
   const dispatch = useDispatch()
 
-  const postsSorted = useSelector(({posts}: RootState) =>
-    posts.posts.toSorted(
-      (postA, postB) =>
-        Date.parse(postB.updatedAt) - Date.parse(postA.updatedAt),
-    ),
-  )
+  const posts = useSelector(sortedPostsSelector)
 
   useEffect(() => {
     dispatch(postsActions.loadPosts())
   }, [dispatch])
 
   return (
-    <Box component="main">
-      <Box className={styles.container}>
-        {postsSorted.map((post) => (
+    <>
+      <Stack direction="column" spacing={2}>
+        {posts.map((post) => (
           <Post key={post.id} post={post} />
         ))}
-      </Box>
-    </Box>
+      </Stack>
+
+      {isAuthenticated && <Create />}
+    </>
   )
 }
 

@@ -1,14 +1,16 @@
 import axios, {AxiosRequestConfig} from 'axios'
 
-export const AXIOS_INSTANCE = axios.create({
+import {ACCESS_TOKEN} from '@/app/consts/auth'
+
+const AXIOS_INSTANCE = axios.create({
   baseURL: 'https://frontend-test-be.stage.thinkeasy.cz',
 })
 
 AXIOS_INSTANCE.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken')
+  const accessToken = localStorage.getItem(ACCESS_TOKEN)
 
-  if (!!token) {
-    config.headers.Authorization = `Bearer ${token}`
+  if (!!accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
   }
 
   return config

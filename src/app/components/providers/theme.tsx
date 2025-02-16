@@ -1,9 +1,11 @@
 'use client'
 
-import {ThemeProvider as Provider} from '@mui/material'
+import {createTheme, ThemeProvider as Provider} from '@mui/material'
 import {FC, PropsWithChildren} from 'react'
 
-import {appTheme} from '@/app/theme'
+import {appThemeOptions} from '@/app/theme'
+
+const appTheme = createTheme(appThemeOptions)
 
 const ThemeProvider: FC<PropsWithChildren> = ({children}) => {
   return <Provider theme={appTheme}>{children}</Provider>

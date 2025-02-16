@@ -2,6 +2,7 @@ import type {Metadata} from 'next'
 import {Geist, Geist_Mono} from 'next/font/google'
 
 import Container from '@/app/components/container'
+import AppMenu from '@/app/components/menu'
 import StoreProvider from '@/app/components/providers/store'
 import ThemeProvider from '@/app/components/providers/theme'
 
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <StoreProvider>
           <ThemeProvider>
+            <AppMenu />
             <Container>{children}</Container>
           </ThemeProvider>
         </StoreProvider>
