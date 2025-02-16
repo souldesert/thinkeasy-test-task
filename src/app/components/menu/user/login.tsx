@@ -1,4 +1,3 @@
-import {AxiosResponse} from 'axios'
 import {FC, useState} from 'react'
 import {TextFieldElement, useForm} from 'react-hook-form-mui'
 
@@ -22,10 +21,8 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
 
     notifyApiResult(
       async () => {
-        // @ts-expect-error TODO поправить
-        const {
-          data: {accessToken, refreshToken},
-        }: AxiosResponse<Auth> = await getAuth().authControllerLogin(data)
+        const {accessToken, refreshToken}: Auth =
+          await getAuth().authControllerLogin(data)
 
         authenticate(accessToken, refreshToken)
         close()

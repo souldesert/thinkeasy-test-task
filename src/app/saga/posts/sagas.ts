@@ -1,4 +1,3 @@
-import {AxiosResponse} from 'axios'
 import {call, put, select} from 'redux-saga/effects'
 
 import {getPosts, PostResponse} from '@/app/api'
@@ -7,13 +6,12 @@ import {selectAuthorId} from '@/app/store/posts/selectors'
 
 export function* loadPostsSaga() {
   try {
-    const {data}: AxiosResponse<PostResponse[]> = yield call(
+    const data: PostResponse[] = yield call(
       getPosts().postsControllerGetAllPosts,
     )
 
     yield put(postsActions.setPosts(data))
   } catch {
-    // TODO добавить обработку ошибок
     yield put(postsActions.setPosts([]))
   }
 }
@@ -22,13 +20,12 @@ export function* loadUserPostsSaga() {
   const authorId: string = yield select(selectAuthorId)
 
   try {
-    const {data}: AxiosResponse<PostResponse[]> = yield call(() =>
+    const posts: PostResponse[] = yield call(() =>
       getPosts().postsControllerUserPosts(authorId),
     )
 
-    yield put(postsActions.setPosts(data))
+    yield put(postsActions.setPosts(posts))
   } catch {
-    // TODO добавить обработку ошибок
     yield put(postsActions.setPosts([]))
   }
 }

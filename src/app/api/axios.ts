@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
+import axios, {AxiosRequestConfig} from 'axios'
 
 import {API_BASE_URL} from '@/app/consts/common'
 import {
@@ -51,13 +51,8 @@ AXIOS_INSTANCE.interceptors.response.use(
       isRefreshing = true
 
       try {
-        // @ts-expect-error TODO поправить
-        const {
-          data: {access_token},
-        }: AxiosResponse<RefreshResponceModel> =
-          await getAuth().authControllerRefreshToken({
-            token: refreshToken,
-          })
+        const {access_token}: RefreshResponceModel =
+          await getAuth().authControllerRefreshToken({token: refreshToken})
 
         setAccessToken(access_token)
 
@@ -75,4 +70,4 @@ AXIOS_INSTANCE.interceptors.response.use(
 )
 
 export const axiosInstance = <T>(config: AxiosRequestConfig): Promise<T> =>
-  AXIOS_INSTANCE.request(config)
+  AXIOS_INSTANCE.request(config).then(({data}) => data)

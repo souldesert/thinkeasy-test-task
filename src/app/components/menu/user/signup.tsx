@@ -1,4 +1,3 @@
-import {AxiosResponse} from 'axios'
 import {FC, useState} from 'react'
 import {TextFieldElement, useForm} from 'react-hook-form-mui'
 
@@ -26,10 +25,8 @@ const SignupDialog: FC<DialogProps> = ({open, toggleOpen}) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {confirmPassword, ...payload} = data
 
-        // @ts-expect-error TODO поправить
-        const {
-          data: {accessToken, refreshToken},
-        }: AxiosResponse<Auth> = await getAuth().authControllerSignup(payload)
+        const {accessToken, refreshToken}: Auth =
+          await getAuth().authControllerSignup(payload)
 
         authenticate(accessToken, refreshToken)
         close()

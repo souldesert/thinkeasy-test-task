@@ -33,7 +33,7 @@ const Posts: FC<PostsProps> = ({userId}) => {
 
   return (
     <>
-      <Typography variant="h3">
+      <Typography variant="h3" marginBottom={2}>
         {!!userId ? `Posts by ${userId}` : 'All posts'}
       </Typography>
 
