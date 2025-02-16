@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
-  useTheme,
 } from '@mui/material'
 import {FC, PropsWithChildren} from 'react'
 import {FormContainer} from 'react-hook-form-mui'
@@ -24,20 +23,12 @@ const FormDialog: FC<Props> = ({
   onClose,
   children,
 }) => {
-  const theme = useTheme()
-
-  const resetForm = () => {
-    setTimeout(formContext.reset, theme.transitions.duration.standard)
-  }
-
   const handleClose = () => {
     onClose()
-    resetForm()
   }
 
   const handleSubmit = (data: any) => {
     onSubmit(data)
-    resetForm()
   }
 
   return (

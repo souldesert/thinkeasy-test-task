@@ -1,5 +1,6 @@
 import type {Metadata} from 'next'
 import {Geist, Geist_Mono} from 'next/font/google'
+import {ToastContainer} from 'react-toastify'
 
 import Container from '@/app/components/container'
 import AppMenu from '@/app/components/menu'
@@ -35,6 +36,7 @@ export default function RootLayout({
           <ThemeProvider>
             <AppMenu />
             <Container>{children}</Container>
+            <ToastContainer hideProgressBar />
           </ThemeProvider>
         </StoreProvider>
       </body>

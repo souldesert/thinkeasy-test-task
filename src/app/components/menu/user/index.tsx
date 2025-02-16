@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import {FC, useState} from 'react'
 
 import {useAuth} from '@/app/hooks/auth'
+import {notifySuccess} from '@/app/utils/notifications'
 
 import LoginDialog from './login'
 import SignupDialog from './signup'
@@ -25,8 +26,7 @@ const UserMenu: FC = () => {
   }
 
   const toggleSignupOpen = () => {
-    // TODO do another way
-    setSignupOpen(!signupOpen)
+    setSignupOpen((open) => !open)
   }
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -49,6 +49,7 @@ const UserMenu: FC = () => {
 
   const handleLogout = () => {
     logout()
+    notifySuccess('You have logged out')
     handleClose()
   }
 

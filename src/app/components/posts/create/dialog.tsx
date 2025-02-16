@@ -9,6 +9,8 @@ import {useDispatch} from 'react-redux'
 import {CreatePostInput, getPosts} from '@/app/api'
 import FormDialog from '@/app/components/base/form-dialog'
 import {postsActions} from '@/app/store/posts'
+import {withTransitionDelay} from '@/app/utils/common'
+import {notifyApiResult} from '@/app/utils/notifications'
 
 import {CreateDialogProps} from './types'
 
@@ -22,10 +24,22 @@ const CreateDialog: FC<CreateDialogProps> = ({open, toggleOpen}) => {
   const onSubmit = async (data: CreatePostInput) => {
     setIsLoading(true)
 
-    await getPosts().postsControllerCreate(data)
-    dispatch(postsActions.loadPosts())
+    notifyApiResult(
+      async () => {
+        await getPosts().postsControllerCreate(data)
+        dispatch(postsActions.loadPosts())
+
+        close()
+      },
+      'Post have been saved',
+      'Error saving post',
+    )
 
     setIsLoading(false)
+  }
+
+  const close = () => {
+    withTransitionDelay(formContext.reset)
     toggleOpen()
   }
 
@@ -37,7 +51,7 @@ const CreateDialog: FC<CreateDialogProps> = ({open, toggleOpen}) => {
       formContext={formContext}
       disabled={isLoading}
       onSubmit={onSubmit}
-      onClose={toggleOpen}
+      onClose={close}
     >
       <TextFieldElement
         name="title"

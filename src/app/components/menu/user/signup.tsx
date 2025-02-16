@@ -5,6 +5,8 @@ import {TextFieldElement, useForm} from 'react-hook-form-mui'
 import {Auth, getAuth} from '@/app/api'
 import FormDialog from '@/app/components/base/form-dialog'
 import {useAuth} from '@/app/hooks/auth'
+import {withTransitionDelay} from '@/app/utils/common'
+import {notifyApiResult} from '@/app/utils/notifications'
 
 import {DialogProps, SignupForm} from './types'
 
@@ -19,17 +21,28 @@ const SignupDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const onSubmit = async (data: SignupForm) => {
     setIsLoading(true)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {confirmPassword, ...payload} = data
+    notifyApiResult(
+      async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {confirmPassword, ...payload} = data
 
-    // @ts-expect-error TODO поправить
-    const {
-      data: {accessToken, refreshToken},
-    }: AxiosResponse<Auth> = await getAuth().authControllerSignup(payload)
+        // @ts-expect-error TODO поправить
+        const {
+          data: {accessToken, refreshToken},
+        }: AxiosResponse<Auth> = await getAuth().authControllerSignup(payload)
 
-    authenticate(accessToken, refreshToken)
+        authenticate(accessToken, refreshToken)
+        close()
+      },
+      'You have signed up',
+      'Error signing up',
+    )
 
     setIsLoading(false)
+  }
+
+  const close = () => {
+    withTransitionDelay(formContext.reset)
     toggleOpen()
   }
 
@@ -41,7 +54,7 @@ const SignupDialog: FC<DialogProps> = ({open, toggleOpen}) => {
       formContext={formContext}
       disabled={isLoading}
       onSubmit={onSubmit}
-      onClose={toggleOpen}
+      onClose={close}
     >
       <TextFieldElement
         name="firstname"

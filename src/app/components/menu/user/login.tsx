@@ -5,6 +5,8 @@ import {TextFieldElement, useForm} from 'react-hook-form-mui'
 import {Auth, getAuth, LoginInput} from '@/app/api'
 import FormDialog from '@/app/components/base/form-dialog'
 import {useAuth} from '@/app/hooks/auth'
+import {withTransitionDelay} from '@/app/utils/common'
+import {notifyApiResult} from '@/app/utils/notifications'
 
 import {DialogProps} from './types'
 
@@ -18,14 +20,25 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const onSubmit = async (data: LoginInput) => {
     setIsLoading(true)
 
-    // @ts-expect-error TODO поправить
-    const {
-      data: {accessToken, refreshToken},
-    }: AxiosResponse<Auth> = await getAuth().authControllerLogin(data)
+    notifyApiResult(
+      async () => {
+        // @ts-expect-error TODO поправить
+        const {
+          data: {accessToken, refreshToken},
+        }: AxiosResponse<Auth> = await getAuth().authControllerLogin(data)
 
-    authenticate(accessToken, refreshToken)
+        authenticate(accessToken, refreshToken)
+        close()
+      },
+      'You have logged in',
+      'Error logging in',
+    )
 
     setIsLoading(false)
+  }
+
+  const close = () => {
+    withTransitionDelay(formContext.reset)
     toggleOpen()
   }
 
@@ -37,7 +50,7 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
       formContext={formContext}
       disabled={isLoading}
       onSubmit={onSubmit}
-      onClose={toggleOpen}
+      onClose={close}
     >
       <TextFieldElement
         name="email"
