@@ -1,6 +1,7 @@
-import {Stack, Typography} from '@mui/material'
+import {Typography} from '@mui/material'
 import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import {Virtuoso} from 'react-virtuoso'
 
 import {useAuth} from '@/app/hooks/auth'
 import {RootState} from '@/app/store'
@@ -33,17 +34,20 @@ const Posts: FC<PostsProps> = ({userId}) => {
 
   return (
     <>
-      <Typography variant="h3" marginBottom={2}>
+      <Typography variant="h3" p={2}>
         {!!userId ? `Posts by ${userId}` : 'All posts'}
       </Typography>
 
-      <Stack direction="column" spacing={2}>
-        {arePostsLoading ? (
-          <PostsSkeleton />
-        ) : (
-          posts.map((post) => <Post key={post.id} post={post} />)
-        )}
-      </Stack>
+      {arePostsLoading ? (
+        <PostsSkeleton />
+      ) : (
+        <Virtuoso
+          data={posts}
+          useWindowScroll
+          totalCount={posts.length}
+          itemContent={(_index, post) => <Post key={post.id} post={post} />}
+        />
+      )}
 
       {isAuthenticated && !userId && <Create />}
     </>
