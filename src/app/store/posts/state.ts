@@ -4,4 +4,5 @@ export const initialState: PostsState = {
   posts: [],
   arePostsLoading: false,
   search: '',
+  authorId: '',
 }

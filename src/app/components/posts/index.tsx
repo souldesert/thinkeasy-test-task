@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -10,8 +10,9 @@ import {filteredPostsSelector} from '@/app/store/posts/selectors'
 import Create from './create'
 import Post from './post'
 import PostsSkeleton from './skeleton'
+import {PostsProps} from './types'
 
-const Posts: FC = () => {
+const Posts: FC<PostsProps> = ({userId}) => {
   const {isAuthenticated} = useAuth()
 
   const dispatch = useDispatch()
@@ -23,11 +24,19 @@ const Posts: FC = () => {
   )
 
   useEffect(() => {
-    dispatch(postsActions.loadPosts())
-  }, [dispatch])
+    if (!!userId) {
+      dispatch(postsActions.loadUserPosts(userId))
+    } else {
+      dispatch(postsActions.loadPosts())
+    }
+  }, [dispatch, userId])
 
   return (
     <>
+      <Typography variant="h3">
+        {!!userId ? `Posts by ${userId}` : 'All posts'}
+      </Typography>
+
       <Stack direction="column" spacing={2}>
         {arePostsLoading ? (
           <PostsSkeleton />
@@ -36,7 +45,7 @@ const Posts: FC = () => {
         )}
       </Stack>
 
-      {isAuthenticated && <Create />}
+      {isAuthenticated && !userId && <Create />}
     </>
   )
 }

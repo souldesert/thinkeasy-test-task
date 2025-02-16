@@ -13,6 +13,12 @@ const setArePostsLoading: PostsReducer<boolean> = (state, {payload}) => {
 
 const loadPosts: PostsReducer<void> = (state) => {
   state.arePostsLoading = true
+  state.authorId = ''
+}
+
+const loadUserPosts: PostsReducer<string> = (state, {payload}) => {
+  state.arePostsLoading = true
+  state.authorId = payload
 }
 
 const setSearch: PostsReducer<string> = (state, {payload}) => {
@@ -22,6 +28,7 @@ const setSearch: PostsReducer<string> = (state, {payload}) => {
 export const postsReducers = {
   setPosts,
   loadPosts,
+  loadUserPosts,
   setSearch,
   setArePostsLoading,
 }

@@ -4,6 +4,8 @@ import {includesLowercase} from '@/app/utils/common'
 
 import {RootState} from '..'
 
+export const selectAuthorId = ({posts}: RootState) => posts.authorId
+
 const selectPosts = ({posts}: RootState) => posts.posts
 const selectQuery = ({posts}: RootState) => posts.search
 
