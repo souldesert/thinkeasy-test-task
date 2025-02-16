@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useAuth} from '@/app/hooks/auth'
 import {RootState} from '@/app/store'
 import {postsActions} from '@/app/store/posts'
-import {sortedPostsSelector} from '@/app/store/posts/selectors'
+import {filteredPostsSelector} from '@/app/store/posts/selectors'
 
 import Create from './create'
 import Post from './post'
@@ -16,7 +16,7 @@ const Posts: FC = () => {
 
   const dispatch = useDispatch()
 
-  const posts = useSelector(sortedPostsSelector)
+  const posts = useSelector(filteredPostsSelector)
 
   const arePostsLoading = useSelector(
     ({posts}: RootState) => posts.arePostsLoading,
