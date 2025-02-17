@@ -4,10 +4,11 @@ import {TextFieldElement, useForm} from 'react-hook-form-mui'
 import {Auth, getAuth} from '@/app/api'
 import FormDialog from '@/app/components/base/form-dialog'
 import {useAuth} from '@/app/hooks/auth'
+import {DialogProps} from '@/app/models/common'
 import {withTransitionDelay} from '@/app/utils/common'
 import {notifyApiResult} from '@/app/utils/notifications'
 
-import {DialogProps, SignupForm} from './types'
+import {SignupForm} from './types'
 
 const SignupDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const {authenticate} = useAuth()
@@ -20,7 +21,7 @@ const SignupDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const onSubmit = async (data: SignupForm) => {
     setIsLoading(true)
 
-    notifyApiResult(
+    await notifyApiResult(
       async () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {confirmPassword, ...payload} = data

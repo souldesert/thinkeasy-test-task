@@ -68,10 +68,18 @@ const UserMenu: FC = () => {
         open={!!anchorEl}
         onClose={handleClose}
       >
-        {/* TODO переделать */}
-        {isAuthenticated && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
-        {!isAuthenticated && <MenuItem onClick={handleLogin}>Login</MenuItem>}
-        {!isAuthenticated && <MenuItem onClick={handleSignup}>Signup</MenuItem>}
+        {isAuthenticated ? (
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        ) : (
+          [
+            <MenuItem key="login" onClick={handleLogin}>
+              Login
+            </MenuItem>,
+            <MenuItem key="signup" onClick={handleSignup}>
+              Signup
+            </MenuItem>,
+          ]
+        )}
       </Menu>
 
       <LoginDialog open={loginOpen} toggleOpen={toggleLoginOpen} />

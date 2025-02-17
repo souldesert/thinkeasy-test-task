@@ -1,5 +1,6 @@
 import {Box, Card, CardContent, CardHeader, Typography} from '@mui/material'
 import Link from 'next/link'
+import {useParams} from 'next/navigation'
 import {FC} from 'react'
 
 import {useAuth} from '@/app/hooks/auth'
@@ -10,6 +11,8 @@ import {PostProps} from './types'
 const Post: FC<PostProps> = ({post}) => {
   const {isAuthenticated} = useAuth()
 
+  const {userId} = useParams()
+
   return (
     <Box p={2}>
       <Card variant="outlined">
@@ -17,7 +20,7 @@ const Post: FC<PostProps> = ({post}) => {
           title={post.title}
           subheader={
             <>
-              {isAuthenticated ? (
+              {isAuthenticated && !userId ? (
                 <Link href={`/${post.authorId}`}>{post.authorId}</Link>
               ) : (
                 post.authorId

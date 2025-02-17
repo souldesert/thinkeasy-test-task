@@ -4,10 +4,9 @@ import {TextFieldElement, useForm} from 'react-hook-form-mui'
 import {Auth, getAuth, LoginInput} from '@/app/api'
 import FormDialog from '@/app/components/base/form-dialog'
 import {useAuth} from '@/app/hooks/auth'
+import {DialogProps} from '@/app/models/common'
 import {withTransitionDelay} from '@/app/utils/common'
 import {notifyApiResult} from '@/app/utils/notifications'
-
-import {DialogProps} from './types'
 
 const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const {authenticate} = useAuth()
@@ -19,7 +18,7 @@ const LoginDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const onSubmit = async (data: LoginInput) => {
     setIsLoading(true)
 
-    notifyApiResult(
+    await notifyApiResult(
       async () => {
         const {accessToken, refreshToken}: Auth =
           await getAuth().authControllerLogin(data)

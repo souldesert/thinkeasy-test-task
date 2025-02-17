@@ -13,7 +13,7 @@ const AppMenu: FC = () => {
   return (
     <AppBar>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+        <Typography variant="h6" component="div" sx={{flexGrow: 1}} noWrap>
           <Link href="/" style={{textDecoration: 'none'}}>
             Think Easy Blog
           </Link>

@@ -1,14 +1,14 @@
 'use client'
 
-import SearchIcon from '@mui/icons-material/Search'
-import {debounce, InputAdornment} from '@mui/material'
+import {debounce} from '@mui/material'
 import {FC, useEffect, useMemo} from 'react'
-import {FormContainer, TextFieldElement, useForm} from 'react-hook-form-mui'
+import {FormContainer, useForm} from 'react-hook-form-mui'
 import {useDispatch} from 'react-redux'
 
 import {APP_DEBOUNCE_DELAY} from '@/app/consts/common'
 import {postsActions} from '@/app/store/posts'
 
+import {SearchField} from './search-field'
 import {SearchForm} from './types'
 
 const Search: FC = () => {
@@ -39,19 +39,7 @@ const Search: FC = () => {
       formContext={formContext}
       onSuccess={(data) => console.log(data)}
     >
-      <TextFieldElement
-        name="search"
-        variant="standard"
-        slotProps={{
-          input: {
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          },
-        }}
-      />
+      <SearchField name="search" />
     </FormContainer>
   )
 }

@@ -34,8 +34,8 @@ const Posts: FC<PostsProps> = ({userId}) => {
 
   return (
     <>
-      <Typography variant="h3" p={2}>
-        {!!userId ? `Posts by ${userId}` : 'All posts'}
+      <Typography variant="h3" p={2} noWrap>
+        {!!userId ? userId : 'All posts'}
       </Typography>
 
       {arePostsLoading ? (

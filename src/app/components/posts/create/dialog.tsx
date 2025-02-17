@@ -8,13 +8,12 @@ import {useDispatch} from 'react-redux'
 
 import {CreatePostInput, getPosts} from '@/app/api'
 import FormDialog from '@/app/components/base/form-dialog'
+import {DialogProps} from '@/app/models/common'
 import {postsActions} from '@/app/store/posts'
 import {withTransitionDelay} from '@/app/utils/common'
 import {notifyApiResult} from '@/app/utils/notifications'
 
-import {CreateDialogProps} from './types'
-
-const CreateDialog: FC<CreateDialogProps> = ({open, toggleOpen}) => {
+const CreateDialog: FC<DialogProps> = ({open, toggleOpen}) => {
   const dispatch = useDispatch()
 
   const formContext = useForm<CreatePostInput>()
@@ -24,7 +23,7 @@ const CreateDialog: FC<CreateDialogProps> = ({open, toggleOpen}) => {
   const onSubmit = async (data: CreatePostInput) => {
     setIsLoading(true)
 
-    notifyApiResult(
+    await notifyApiResult(
       async () => {
         await getPosts().postsControllerCreate(data)
         dispatch(postsActions.loadPosts())
